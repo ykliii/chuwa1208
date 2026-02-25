@@ -21,17 +21,15 @@ public class RetryUtil {
             int maxRetries,
             long baseDelayMs,
             long maxDelayMs) throws Exception {
-        T res = null;
         for(int attempt = 0; attempt < maxRetries; attempt++) {
             try {
-                res = task.call();
-                return res;
+                return task.call();
             } catch (Exception e) {
                 if(attempt == maxRetries - 1) throw e;
                 long delay = Math.min(baseDelayMs * (1L << attempt), maxDelayMs);
                 Thread.sleep(delay);
             }
         }
-        return res;
+        return null;
     }
 } 
